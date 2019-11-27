@@ -10,5 +10,7 @@ run:
 
 clean:
 	rm *.o
-	rm random.txt
 	rm program
+
+memcheck:
+	valgrind --leak-check=yes ./program

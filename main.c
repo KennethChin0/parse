@@ -2,31 +2,27 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <dirent.h>
+#include <errno.h>
 
 
-
-int main(int argc, char * argv[]){
-  DIR * dir;
-  char directory[512];
-  if (argc = 1){
-    fgets(directory, sizeof(directory), stdin);
-    directory[strlen(directory) - 1] = '\0';
+char **  parse_args( char * line ){
+  char ** args = calloc(6, sizeof(char));
+  char * current = line;
+  char * holder;
+  int i = 0;
+  while (current != NULL){
+    holder = strsep(&current, " ");
+    args[i]  = holder;
+    i++;
   }
-  else{
-    strcpy(directory, argv[1]);
-  }
-  // dir = opendir(directory);
-  // // char line[100] = argv[1];
-  // char * s1 = directory;
-  // printf("[%s]\n", strsep( &s1, "-" ));
-  // printf("[%s]\n", s1);
-  char * s1 = directory;
-  parse_args(s1);
+  args[i] = NULL;
+  return args;
 }
 
-char *  parse_args( char * line ){
-  printf("[%s]\n", strsep( &line  , "-" ));
-  printf("[%s]\n", line);
-  return line;
+int main(){
+  char input[100] ="ls -a -l";
+  char ** args = parse_args(input);
+  execvp(args[0], args);
+  free(args);
+  return 0;
 }
